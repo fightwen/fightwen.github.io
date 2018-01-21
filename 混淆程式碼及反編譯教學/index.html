@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-tw">
+<head>
+	<!-- ad start -->
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6997794178641312",
+    enable_page_level_ads: true
+  });
+</script>
+	<!-- ad end -->
+
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="這個主題網路上搜尋有著千千萬萬的文章，通常混淆跟反編譯寫在一起的文章比較少，因此我還是想寫得更完整，以我自己的方式記錄一遍這樣的過程。如有任何地方有誤都歡迎指教！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android ProGuard 混淆程式碼及反編譯教學">
+<meta property="og:url" content="https://fightwen.github.io/混淆程式碼及反編譯教學/index.html">
+<meta property="og:site_name" content="Wen's Note">
+<meta property="og:description" content="這個主題網路上搜尋有著千千萬萬的文章，通常混淆跟反編譯寫在一起的文章比較少，因此我還是想寫得更完整，以我自己的方式記錄一遍這樣的過程。如有任何地方有誤都歡迎指教！">
+<meta property="og:updated_time" content="2018-01-21T10:33:46.279Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android ProGuard 混淆程式碼及反編譯教學">
+<meta name="twitter:description" content="這個主題網路上搜尋有著千千萬萬的文章，通常混淆跟反編譯寫在一起的文章比較少，因此我還是想寫得更完整，以我自己的方式記錄一遍這樣的過程。如有任何地方有誤都歡迎指教！">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://fightwen.github.io/混淆程式碼及反編譯教學/"/>
+
+
+
+<meta name="google-site-verification" content="vGf3Vy9B1rZGYAppCHaPWvC6Kvk6jBnb9DAjbpl4YVE" />
+
+
+  <title>Android ProGuard 混淆程式碼及反編譯教學 | Wen's Note</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-82104467-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wen's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fightwen.github.io/混淆程式碼及反編譯教學/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wen's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Android ProGuard 混淆程式碼及反編譯教學</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-21T18:23:32+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/混淆程式碼及反編譯教學/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="混淆程式碼及反編譯教學/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>這個主題網路上搜尋有著千千萬萬的文章，<br>通常混淆跟反編譯寫在一起的文章比較少，<br>因此我還是想寫得更完整，以我自己的方式記錄一遍這樣的過程。<br>如有任何地方有誤都歡迎指教！<br><a id="more"></a></p>
+<h2 id="為什麼需要混淆"><a href="#為什麼需要混淆" class="headerlink" title="為什麼需要混淆"></a>為什麼需要混淆</h2><p>Android App 只要把 .apk 檔換成 .zip 我們就可以將它解壓縮，看到裡面的 resource 以及 dex 檔，<br>很容易利用相關工具例如 dex2jar、jd-gui ，便可以把裡面的程式碼看的一覽無遺，當然如果是開源的話，就沒關係，但如果我們是商業用 apk ，安全疑慮無疑是個大漏洞，利用混淆讓程式碼可讀性降低，延緩破解速度，不僅有此好處，透過 Proguard 我們可以藉此優化 apk 的大小，它會幫我們移除不必要的程式碼，簡化程式碼的寫法。</p>
+<h2 id="Proguard-的優點"><a href="#Proguard-的優點" class="headerlink" title="Proguard 的優點"></a>Proguard 的優點</h2><p><a href="https://www.youtube.com/watch?v=5frxLkO4oTM" target="_blank" rel="external">https://www.youtube.com/watch?v=5frxLkO4oTM</a><br>這裡有個不錯的影片告訴我們其實 proguard 不只混淆，它影響了 apk 大小，也減少了 method 數。( java 有限制 method 數量 限制在 65535 ，只要超過了就會編譯失敗，當然現在有 multidex 解決了問題，不過 apk 大小仍然是影響著使用者的下載意願)</p>
+<p><a href="https://lab.getbase.com/proguard-for-android/" target="_blank" rel="external">https://lab.getbase.com/proguard-for-android/</a><br>這篇文章更是一步一步帶領我們實際驗證透過 proguard 優化了 apk。使用 dependencies 掛越多第三方 lib 會越有感覺， apk 的大小不斷的在增長。 </p>
+<p>相關指令：<br><code>./gradlew assembleDebug</code><br>打包 apk 後可以看見包完的 總時間</p>
+<p><code>dexcount ./app/build/outputs/apk/app-debug.apk</code><br>分析 apk 使用的 method 數量</p>
+<h2 id="Proguard-混淆優化程式碼"><a href="#Proguard-混淆優化程式碼" class="headerlink" title="Proguard 混淆優化程式碼"></a>Proguard 混淆優化程式碼</h2><p>透過 proguard 混淆程式碼後， class name 、 method name 、變數，都會變成 a、b、c…這種難以閱讀的樣子，並且移除 log、註解 ，簡化一些複雜的程式邏輯。這些都可以透過反編譯後看見。<br><figure class="highlight sml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">...</div><div class="line">buildTypes &#123;</div><div class="line">    release &#123;</div><div class="line">        shrinkResources <span class="literal">true</span></div><div class="line">        minifyEnabled <span class="literal">true</span></div><div class="line">        proguardFiles getDefaultProguardFile(<span class="symbol">'proguard</span>-android.txt'),</div><div class="line">                <span class="symbol">'proguard</span>-rules.pro'</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在 gradle 打開混淆的設定方式就是 <code>minifyEnabled true</code> ， sdk 有一個預設寫好的 proguard 檔案就是<code>proguard-android.txt</code>，而後面的 <code>proguard-rules.pro</code> 就是我們自己的 proguard rule 的檔案。</p>
+<p>打開 <code>proguard-rules.pro</code> 後，要寫 App 有哪些地方需要保留不被 proguard 混淆優化，通常第三方 SDK 在文件都會提供 rule ，那些都要寫進去 proguard file，我們自己 App 的 code 要保留的 code rule 注意事項。</p>
+<ol>
+<li>Activity 、 View 、 Broadcast….四大組件，這些需要被保留，因為 AndroidManifest.xml 註冊著它們的 name ，如果混淆了，會找不到。</li>
+<li>JNI 程式碼需保留</li>
+<li><p>運行的程式碼需保留(例如有反射，尋找 name 的相關 method 都需要保留 (App 最常遇到要保留的是 gson mapping 的物件)、序列化物件…)</p>
+<p>官方提供了一個基本的 proguard rule 寫法<br><a href="https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt" target="_blank" rel="external">https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt</a></p>
+<p>有一個更完整的寫法，算是比較廣泛 App 會使用到的 rule<br><a href="https://gist.github.com/albinmathew/c4436f8371c9c41461ab" target="_blank" rel="external">https://gist.github.com/albinmathew/c4436f8371c9c41461ab</a></p>
+</li>
+</ol>
+<p>常用第三方保留的 rule<br><a href="https://github.com/krschultz/android-proguard-snippets" target="_blank" rel="external">https://github.com/krschultz/android-proguard-snippets</a></p>
+<p> 不過實際上建議依據自己的 App 去調配你要保留的規則，通常會在 release apk 做混淆，混淆後還是需要安裝 apk 測試一下那些功能壞掉了，然後保留那個部分，並且搭配反編譯去看 code 解析問題點。</p>
+<p><code>-keep class com.squareup.okhttp.** { *; }</code><br>遇到問題的萬用保留法，這個會讓 package 下 所有包含子 package 還有 class 、 method 、 變數都保留不受 proguard 混淆優化。</p>
+<p> <code>-dontwarn com.squareup.okhttp.**</code><br> 打包 apk 打開 proguard 時，會有一些 warn 警告導致打包 apk fail ，此 rule 也會比較常用到。</p>
+<h2 id="混淆後的-Exception-追蹤"><a href="#混淆後的-Exception-追蹤" class="headerlink" title="混淆後的 Exception 追蹤"></a>混淆後的 Exception 追蹤</h2><p>最麻煩的莫過於這個了，proguard 打開後，連 crash 的行數都找不到了，如果使用者有問題工程師 debug 也麻煩，Crashlytics SDK 官方其實有提供相關的保留規則。<br><a href="https://docs.fabric.io/android/crashlytics/dex-and-proguard.html" target="_blank" rel="external">https://docs.fabric.io/android/crashlytics/dex-and-proguard.html</a></p>
+<p><code>-keepattributes *Annotation*</code><br>保留注解<br><code>-keepattributes SourceFile,LineNumberTable</code><br>保留 crash 有意義的錯誤回報、行數<br><code>-keep public class * extends java.lang.Exception</code><br>保留 Exception<br><code>-printmapping mapping.txt</code><br>產出混淆前後的差異文件檔</p>
+<p>為什麼要產生 <code>mapping.txt</code> 是因為即使寫了保留以上的規則，但 crash 時還是顯示混淆後的行數、package name，其實行數不對，看到的 package name 也都是 com.a.b.c ，所以需要倚賴一個 sdk 附的工具 <code>retrace</code> 和 <code>mapping.txt</code> 再次把錯誤訊息解出來。</p>
+<p><code>retrace.bat -verbose mapping.txt obfuscated_trace.txt</code></p>
+<p>還有一個圖形化界面的工具 <code>proguardgui.sh</code> 幫助我們，<br>路徑大概是長這樣，要看你把 Android sdk 放哪個檔案。<br><code>xxx/Android/sdk/tools/proguard/bin/proguardgui.sh</code></p>
+<h2 id="反編譯-APK"><a href="#反編譯-APK" class="headerlink" title="反編譯 APK"></a>反編譯 APK</h2><p>這邊教學不用 dex2jar 工具，多次使用後發現其實有時無法真實還原出 apk ，還會產出 error 檔，google 一輪後發現還真不好處理，猜測是因為專案有使用了 kotlin ，因此 error 檔出現了 data class hashcode 的錯誤 (這真的網路上沒找到甚麼好的解法，討論極少)，故發現了一個更好用的工具幫助我們反編譯，名為 <strong>enjarify</strong>，重點是它是 <strong>google 官方的工具</strong>！</p>
+<p>enjarify github 連結：<a href="https://github.com/google/enjarify" target="_blank" rel="external">https://github.com/google/enjarify</a><br>使用它只需要安裝 python3 以及 把它 clone 下來執行即可。<br>官方有特別說明 dex2jar 其實是較為老舊的一個工具，不建議使用的原因皆寫在 github 上。</p>
+<ul>
+<li><p>Mac 操作流程</p>
+<blockquote>
+<ol>
+<li><p>打開 terminal </p>
+</li>
+<li><p><code>brew install python3</code><br>安裝 python 3<br>(無安裝 brew 請到 <a href="https://brew.sh/index_zh-tw.html" target="_blank" rel="external">https://brew.sh/index_zh-tw.html</a> )</p>
+</li>
+<li><p><code>git clone https://github.com/google/enjarify.git</code><br>把 enjarify 用 git clone 下來 到你要的資料夾路徑<br>(可以在clone 前 <code>cd ~</code> 就切到 home路徑)<br>(無安裝 git 請到 <a href="https://git-scm.com/book/zh-tw/v2/%E9%96%8B%E5%A7%8B-Git-%E5%AE%89%E8%A3%9D%E6%95%99%E5%AD%B8" target="_blank" rel="external">https://git-scm.com/book/zh-tw/v2/%E9%96%8B%E5%A7%8B-Git-%E5%AE%89%E8%A3%9D%E6%95%99%E5%AD%B8</a>)</p>
+</li>
+<li><p><code>sudo ./enjarify.sh myapp.apk</code><br>此步驟就是執行 enjarify ，可以把 apk 反編譯 並產生成 jar 檔，注意 apk 跟 enjarify 需要同路徑</p>
+</li>
+<li><p>下載 jd-gui 工具打開 jar 檔 <a href="http://jd.benow.ca/" target="_blank" rel="external">http://jd.benow.ca/</a><br>程式碼就赤裸裸地出現了！</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li><p>還有一個值得注意的工具叫做 <code>apktool</code> ，它幫我們解包 apk 並可以讓 apk 再打包，但它解出來 java code 是用 smali 語法呈現，它的好處是可以解出資源檔像是 xml 那些，如果單純用 dex2jar 跟 enjarify 就看不到 xml 相關的檔案了。 不過本文著重於混淆後用反編譯工具檢查 java code ，此工具不再討論範圍內。(<a href="https://ibotpeaches.github.io/Apktool/install/" target="_blank" rel="external">https://ibotpeaches.github.io/Apktool/install/</a>)</p>
+</li>
+</ul>
+<h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>其實有了 Proguard 無法保證 Apk 絕對安全，它能保證做一定程度的優化是無庸置疑的，更深入的混淆可以用付費的 Dexguard ，它可以連字串都幫你做加密，不過費用是年費，且不便宜，或是有其他 Apk 加殼的方式，不過付費方案的討論較少，請斟酌自己的需求選用。<br>相關介紹：<a href="https://www.guardsquare.com/zh-hans/blog/dexguard-vs-proguard" target="_blank" rel="external">https://www.guardsquare.com/zh-hans/blog/dexguard-vs-proguard</a></p>
+<h2 id="相關連結"><a href="#相關連結" class="headerlink" title="相關連結"></a>相關連結</h2><p><a href="https://developer.android.com/studio/build/shrink-code.html#keep-code" target="_blank" rel="external">https://developer.android.com/studio/build/shrink-code.html#keep-code</a><br><a href="https://www.slideshare.net/GuardSquare/eric-lafortune-proguard-optimizer-and-obfuscator-in-the-android-sdk-59573496" target="_blank" rel="external">https://www.slideshare.net/GuardSquare/eric-lafortune-proguard-optimizer-and-obfuscator-in-the-android-sdk-59573496</a><br><a href="https://my.oschina.net/u/236164/blog/297051" target="_blank" rel="external">https://my.oschina.net/u/236164/blog/297051</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/手機備份/" rel="next" title="Android 手機備份">
+                <i class="fa fa-chevron-left"></i> Android 手機備份
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<script>
+		  (adsbygoogle = window.adsbygoogle || []).push({
+			google_ad_client: "ca-pub-6997794178641312",
+			enable_page_level_ads: true
+		  });
+		</script>
+      
+	  
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#為什麼需要混淆"><span class="nav-number">1.</span> <span class="nav-text">為什麼需要混淆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Proguard-的優點"><span class="nav-number">2.</span> <span class="nav-text">Proguard 的優點</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Proguard-混淆優化程式碼"><span class="nav-number">3.</span> <span class="nav-text">Proguard 混淆優化程式碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#混淆後的-Exception-追蹤"><span class="nav-number">4.</span> <span class="nav-text">混淆後的 Exception 追蹤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反編譯-APK"><span class="nav-number">5.</span> <span class="nav-text">反編譯 APK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#總結"><span class="nav-number">6.</span> <span class="nav-text">總結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關連結"><span class="nav-number">7.</span> <span class="nav-text">相關連結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fightwen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fightwen.github.io/混淆程式碼及反編譯教學/';
+          this.page.identifier = '混淆程式碼及反編譯教學/';
+          this.page.title = 'Android ProGuard 混淆程式碼及反編譯教學';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fightwen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
