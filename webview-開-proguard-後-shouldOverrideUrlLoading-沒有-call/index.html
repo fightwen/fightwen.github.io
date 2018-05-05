@@ -78,7 +78,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android," />
 
 
 
@@ -89,46 +89,16 @@
 
 
 
-<meta name="description" content="Name: Wen
-Android Developer(2 years)
-Email: franticmz@gmail.com
-Github / Stackoverflow / Linkedin
-
-
-Other  interestsDigital Art / MML(MIDI)Pixiv / Mabi MML
-
-Use traditional Chinese
-
-If you have a gre">
-<meta property="og:type" content="website">
-<meta property="og:title" content="About">
-<meta property="og:url" content="https://fightwen.github.io/about/index.html">
+<meta name="description" content="因為金流交易使用 Webview 接，使用 proguard 後，發現 shouldOverrideUrlLoading 此 method 沒有 call，於是無法 redirect 回來結果，導致金流流程卡住。此文分享解 Bug 過程思路，歡迎指教！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Webview 使用 Proguard 後 Bug">
+<meta property="og:url" content="https://fightwen.github.io/webview-開-proguard-後-shouldOverrideUrlLoading-沒有-call/index.html">
 <meta property="og:site_name" content="Wen's Note">
-<meta property="og:description" content="Name: Wen
-Android Developer(2 years)
-Email: franticmz@gmail.com
-Github / Stackoverflow / Linkedin
-
-
-Other  interestsDigital Art / MML(MIDI)Pixiv / Mabi MML
-
-Use traditional Chinese
-
-If you have a gre">
-<meta property="og:updated_time" content="2017-12-31T11:35:27.543Z">
+<meta property="og:description" content="因為金流交易使用 Webview 接，使用 proguard 後，發現 shouldOverrideUrlLoading 此 method 沒有 call，於是無法 redirect 回來結果，導致金流流程卡住。此文分享解 Bug 過程思路，歡迎指教！">
+<meta property="og:updated_time" content="2018-05-05T11:34:27.941Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="About">
-<meta name="twitter:description" content="Name: Wen
-Android Developer(2 years)
-Email: franticmz@gmail.com
-Github / Stackoverflow / Linkedin
-
-
-Other  interestsDigital Art / MML(MIDI)Pixiv / Mabi MML
-
-Use traditional Chinese
-
-If you have a gre">
+<meta name="twitter:title" content="Android Webview 使用 Proguard 後 Bug">
+<meta name="twitter:description" content="因為金流交易使用 Webview 接，使用 proguard 後，發現 shouldOverrideUrlLoading 此 method 沒有 call，於是無法 redirect 回來結果，導致金流流程卡住。此文分享解 Bug 過程思路，歡迎指教！">
 
 
 
@@ -158,14 +128,14 @@ If you have a gre">
 
 
 
-  <link rel="canonical" href="https://fightwen.github.io/about/"/>
+  <link rel="canonical" href="https://fightwen.github.io/webview-開-proguard-後-shouldOverrideUrlLoading-沒有-call/"/>
 
 
 
 <meta name="google-site-verification" content="vGf3Vy9B1rZGYAppCHaPWvC6Kvk6jBnb9DAjbpl4YVE" />
 
 
-  <title>About | Wen's Note</title>
+  <title>Android Webview 使用 Proguard 後 Bug | Wen's Note</title>
   
 
 
@@ -289,46 +259,169 @@ If you have a gre">
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fightwen.github.io/webview-開-proguard-後-shouldOverrideUrlLoading-沒有-call/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wen's Note">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h2 class="post-title" itemprop="name headline">About</h2>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <ul>
-<li>Name: Wen</li>
-<li>Android Developer(2 years)</li>
-<li>Email: franticmz@gmail.com</li>
-<li><a href="https://github.com/fightwen" target="_blank" rel="external">Github</a> / <a href="https://stackoverflow.com/users/6937444/racwen" target="_blank" rel="external">Stackoverflow</a> / <a href="https://www.linkedin.com/in/wen-wang-9a4b96100/" target="_blank" rel="external">Linkedin</a></li>
-</ul>
-<ul>
-<li><p>Other  interests<br>Digital Art / MML(MIDI)<br><a href="https://www.pixiv.net/member.php?id=1162406" target="_blank" rel="external">Pixiv</a> / <a href="https://mabinogi.fws.tw/ac_comproser.php?comstext=%E9%9C%B2%E7%B5%B2&amp;comdct=comid&amp;search_com=%B7j%B4M" target="_blank" rel="external">Mabi MML</a></p>
-</li>
-<li><p>Use traditional Chinese</p>
-</li>
-<li>If you have a great job opportunity, you can recommend to me! Thanks!</li>
-</ul>
-
+          <h2 class="post-title" itemprop="name headline">Android Webview 使用 Proguard 後 Bug</h2>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-05-05T19:12:55+08:00">
+                2018-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/webview-開-proguard-後-shouldOverrideUrlLoading-沒有-call/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="webview-開-proguard-後-shouldOverrideUrlLoading-沒有-call/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>因為金流交易使用 Webview 接，<br>使用 proguard 後，發現 shouldOverrideUrlLoading 此 method 沒有 call，<br>於是無法 redirect 回來結果，導致金流流程卡住。<br>此文分享解 Bug 過程思路，歡迎指教！</p>
+<a id="more"></a>
+<p>首先懷疑 Server 回來的資料所接的物件裡面的東西可能壞掉，<br>因此藉由 WebviewClient 去查回來的結果，<br>確認此段並不是造成 Bbug主因。</p>
+<p>後來陸陸續續在 Stack overflow 找到一些解法，<br>最後正確解是把以下 keep 語法放入 Proguard ，其實我在想跟 http 後來改成 https 有關係，<br>所以才會需要 keep SSL 的相關物件。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">-keep public class android<span class="selector-class">.net</span><span class="selector-class">.http</span><span class="selector-class">.SslError</span></div><div class="line">-keep public class android<span class="selector-class">.webkit</span><span class="selector-class">.WebViewClient</span></div><div class="line"></div><div class="line">-dontwarn android<span class="selector-class">.webkit</span><span class="selector-class">.WebView</span></div><div class="line">-dontwarn android<span class="selector-class">.net</span><span class="selector-class">.http</span><span class="selector-class">.SslError</span></div><div class="line">-dontwarn android<span class="selector-class">.webkit</span><span class="selector-class">.WebViewClient</span></div></pre></td></tr></table></figure>
+<p>Link: <a href="https://stackoverflow.com/questions/10052437/proguard-warning-library-class-android-webkit-webview-depends-on-program-class-a" target="_blank" rel="external">https://stackoverflow.com/questions/10052437/proguard-warning-library-class-android-webkit-webview-depends-on-program-class-a</a><br>不過在stack overflow 上問的人其實遇到的問題跟我不一樣，哈哈。</p>
+<p>其他未此 Bug 正確解，但可能以後會影響其他地方故還是放進 Proguard </p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">-keepclassmembers <span class="class"><span class="keyword">class</span> <span class="title">*</span> <span class="keyword">extends</span> <span class="title">android</span>.<span class="title">webkit</span>.<span class="title">WebViewClient</span> </span>&#123;</div><div class="line">     public void *(android.webkit.<span class="type">WebView</span>,java.lang.<span class="type">String</span>,android.graphics.<span class="type">Bitmap</span>);</div><div class="line">     public boolean *(android.webkit.<span class="type">WebView</span>,java.lang.<span class="type">String</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">-keep <span class="class"><span class="keyword">class</span> <span class="title">com</span>.<span class="title">nuazure</span>.<span class="title">shopping</span>.<span class="title">JavascriptCallback</span></span></div><div class="line">-keep <span class="class"><span class="keyword">class</span> <span class="title">*</span> <span class="title">implements</span> <span class="title">com</span>.<span class="title">nuazure</span>.<span class="title">shopping</span>.<span class="title">JavascriptCallback</span></span></div><div class="line">-keepclassmembers <span class="class"><span class="keyword">class</span> <span class="title">*</span> <span class="title">implements</span> <span class="title">com</span>.<span class="title">nuazure</span>.<span class="title">shopping</span>.<span class="title">JavascriptCallback</span> </span>&#123;</div><div class="line">    &lt;methods&gt;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/混淆程式碼及反編譯教學/" rel="next" title="Android ProGuard 混淆程式碼及反編譯教學">
+                <i class="fa fa-chevron-left"></i> Android ProGuard 混淆程式碼及反編譯教學
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<script>
+		  (adsbygoogle = window.adsbygoogle || []).push({
+			google_ad_client: "ca-pub-6997794178641312",
+			enable_page_level_ads: true
+		  });
+		</script>
+      
+	  
+    </div>
   </div>
 
 
@@ -580,9 +673,9 @@ If you have a gre">
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://fightwen.github.io/about/index.html';
-          this.page.identifier = 'about/index.html';
-          this.page.title = 'About';
+          this.page.url = 'https://fightwen.github.io/webview-開-proguard-後-shouldOverrideUrlLoading-沒有-call/';
+          this.page.identifier = 'webview-開-proguard-後-shouldOverrideUrlLoading-沒有-call/';
+          this.page.title = 'Android Webview 使用 Proguard 後 Bug';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://fightwen.disqus.com/embed.js';
